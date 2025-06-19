@@ -2,6 +2,7 @@
 from pathlib import Path
 import os
 from decouple import config
+import dj_database_url
 
 BASE_DIR = Path(__file__).resolve().parent.parent
 
@@ -76,14 +77,15 @@ WSGI_APPLICATION = 'project.wsgi.application'
 
 # إعدادات قاعدة البيانات
 DATABASES = {
-    'default': {
-        'ENGINE': 'django.db.backends.postgresql',
-        'NAME': 'crowd_funding_deploy',
-        'USER': 'postgres',
-        'PASSWORD': 'hossamkoky599',
-        'HOST': '127.0.0.1',
-        'PORT': '5432',
-    }
+    'default': dj_database_url.config(default=os.environ['DATABASE_URL'])
+    # 'default': {
+    #     'ENGINE': 'django.db.backends.postgresql',
+    #     'NAME': 'crowd_funding_deploy',
+    #     'USER': 'postgres',
+    #     'PASSWORD': 'hossamkoky599',
+    #     'HOST': '127.0.0.1',
+    #     'PORT': '5432',
+    # }
 }
 # print(f"Database: {os.getenv('DB_NAME')}")
 ### The Custom User Model
@@ -141,7 +143,8 @@ REST_FRAMEWORK = {
 # إعدادات static & media
 STATIC_URL        = '/static/'
 STATIC_ROOT       = os.path.join(BASE_DIR, 'staticfiles')
-STATICFILES_DIRS  = [os.path.join(BASE_DIR, 'static')]
+STATICFILES_STORAGE = 'whitenoise.storage.CompressedManifestStaticFilesStorage'
+# STATICFILES_DIRS  = [os.path.join(BASE_DIR, 'static')]
 
 MEDIA_URL         = '/media/'
 MEDIA_ROOT        = os.path.join(BASE_DIR, 'media')
